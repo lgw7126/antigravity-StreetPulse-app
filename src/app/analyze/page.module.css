@@ -1,0 +1,145 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  z-index: 1;
+}
+
+.main {
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.header h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.districtName {
+  color: var(--primary);
+  text-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
+}
+
+.header p {
+  font-size: 0.95rem;
+  color: #71717a;
+}
+
+/* 레이더 디바이스 시뮬레이터 */
+.radarContainer {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.05) 0%, rgba(9, 9, 11, 0.9) 100%);
+  border-radius: 50%;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.1);
+}
+
+.radarContainer::before {
+  content: '';
+  position: absolute;
+  width: 70%;
+  height: 70%;
+  border-radius: 50%;
+  border: 1px dashed rgba(139, 92, 246, 0.15);
+}
+
+.radarContainer::after {
+  content: '';
+  position: absolute;
+  width: 40%;
+  height: 40%;
+  border-radius: 50%;
+  border: 1px solid rgba(139, 92, 246, 0.1);
+}
+
+/* 레이더 회전 빔 */
+.radarSweepLine {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 50%;
+  background: linear-gradient(45deg, rgba(139, 92, 246, 0.4) 0%, transparent 80%);
+  transform-origin: top left;
+  animation: radarSweep 3s linear infinite;
+  border-left: 1.5px solid rgba(139, 92, 246, 0.6);
+  pointer-events: none;
+}
+
+.radarCenter {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: var(--primary);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--primary);
+  z-index: 2;
+}
+
+/* 가상의 레이더 포착 타겟들 */
+.radarTarget {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background-color: var(--hot);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--hot);
+  animation: pulseDot 1.5s infinite;
+  opacity: 0.8;
+}
+
+.target1 { top: 30%; left: 70%; animation-delay: 0.2s; }
+.target2 { top: 65%; left: 25%; background-color: var(--rising); box-shadow: 0 0 8px var(--rising); animation-delay: 0.8s; }
+.target3 { top: 20%; left: 40%; background-color: var(--stable); box-shadow: 0 0 8px var(--stable); animation-delay: 1.4s; }
+
+.statusBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.statusText {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #e4e4e7;
+  height: 1.5rem;
+  transition: all 0.3s;
+}
+
+.progressBarContainer {
+  width: 80%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background: linear-gradient(to right, var(--primary), #6366f1);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}

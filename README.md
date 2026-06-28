@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📡 골목 레이더 (Alley Radar)
 
-## Getting Started
+> **유튜브 트렌드 데이터와 AI 분석으로 상권의 온도를 실시간 감지하는 실시간 레이더**
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### [🚀 클릭하여 골목 레이더 바로 가기 (http://localhost:3000)](http://localhost:3000)
+*(로컬 개발 서버가 실행 중인 상태에서 위 링크를 누르면 웹 앱이 즉시 기동됩니다.)*
+
+---
+
+## 🎯 1. 기획 배경 및 기획 의도 (JTBD Framework)
+
+### 💼 핵심 JTBD (Jobs-To-Be-Done)
+> *"지금 내가 관심을 두고 있는 이 동네 상권이 뜨고 있는지, 아니면 식어가고 있는지 빠르게 알고 싶어. 창업비용을 투자하기 전에 이 상권이 진짜 살아있는지 유튜브 데이터로 검증하고 싶고, 이미 창업을 했다면 내 동네와 경쟁 동네를 비교 모니터링하고 싶어."*
+
+### 🔍 시장 분석 및 기회 발굴
+*   **유튜브의 선행 지표성**: "성수동 맛집", "망원동 카페" 등의 영상 조회수와 언급량의 추이는 오프라인 실제 방문객 유입량의 변화를 카드 매출 및 정부 통계(2~6개월 시차 발생)보다 **최소 2~6개월 선행하여 반영**합니다.
+*   **기존 상권 분석 도구의 한계**: 소상공인진흥공단, 나이스비즈맵 등은 과거 통계 중심이며 소셜 바이럴 및 크리에이터 반응률을 분석하지 못합니다.
+*   **타겟 사용자**:
+    *   **예비 자영업자**: 상권 선택 의사결정을 돕는 선행 데이터를 제공받아 창업 리스크 감소.
+    *   **기존 자영업자**: 내 상권의 관심도 모니터링 및 인근 경쟁 상권과의 실시간 대조.
+
+---
+
+## 🛠️ 2. 만들어진 과정 및 기술 스택
+
+### ⚙️ 기술 아키텍처
+*   **프론트엔드/백엔드 통합**: **Next.js (App Router) + TypeScript**
+    *   *보안 최적화*: 원래 React Native + Expo 기획에서 API 키 노출 방지를 위해 Vercel 배포에 최적화된 Next.js 백엔드 API 라우트 방식으로 전환했습니다.
+*   **스타일링**: **Vanilla CSS Modules** (다크 모드 네온 그라데이션 및 글래스모피즘 적용)
+*   **아이콘 라이브러리**: `lucide-react`
+*   **연동 외부 API**: YouTube Data API v3, Anthropic Claude API (claude-3-5-sonnet)
+
+### 📈 개발 타임라인 및 극복 과정
+1.  **Next.js 환경 구축**: 패키지 네이밍 대문자 제약을 임시 폴더 우회 생성 기법으로 해결 후, TypeScript 및 에러 없는 빌드 세팅 완료.
+2.  **레이더 온도 계산 공식 설계 (`src/services/radar.ts`)**:
+    *   $$\text{상권 온도} = (\text{최근 1개월 영상 볼륨} \times 0.3) + (\text{조회수 성장 모멘텀} \times 0.5) + (\text{신규 언급 채널 확산도} \times 0.2)$$
+    *   산출된 온도를 기반으로 HOT(빨강), RISING(주황), STABLE(초록), COOLING(파랑), COLD(회색) 5단계 해석 로직 구축.
+3.  **정밀 디버그 로그 및 공공 데이터 대조군 추가**:
+    *   서버 터미널에 API 로드 상태, 소요시간(ms), 조회 통계가 정교하게 찍히도록 업그레이드.
+    *   서울시 실제 F&B 공공 통계(월평균 매출액, 개업률, 폐업률, 3년 생존율) 데이터베이스 및 유튜브 점수 연동형 시뮬레이션 모듈 구현.
+4.  **최신 트렌드 필터링 튜닝**:
+    *   오래된 영상 유입 문제를 방지하기 위해 유튜브 API에 **최근 3개월 범위 필터(`publishedAfter`)** 적용. 
+    *   영상이 너무 적은 상권은 **자동으로 최근 1년으로 확장하는 방어 예외 처리** 완료.
+5.  **방어적 프로그래밍**: 브라우저 캐싱과 구 스키마 간 충돌을 막기 위해 조건부 렌더링 검증 가드(`{publicData && ...}`)를 적용하여 런타임 오류 방지.
+
+---
+
+## 📖 3. 사용 방법
+
+### 1단계: API 키 준비 및 입력
+프로젝트 루트 폴더 내의 [`.env.local`](file:///c:/Users/kikin/Projects/antigravity-StreetPulse-app/.env.local) 파일을 열고 발급받은 API 키를 큰따옴표 안에 입력한 뒤 저장합니다:
+```env
+# 유튜브 데이터 연동을 위한 API 키 (YouTube Data API v3)
+YOUTUBE_API_KEY="AIzaSy..."
+
+# Claude AI 분석 리포트 연동을 위한 API 키 (Anthropic Claude API)
+ANTHROPIC_API_KEY="sk-ant-..."
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2단계: 개발 서버 기동
+프로젝트 경로 내 터미널에서 다음 명령을 실행하여 개발 서버를 켭니다 (현재 기동되어 작동 중입니다):
+```bash
+npm run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 3단계: 상권 검색 및 분석
+1.  브라우저를 열고 최상단의 실행 링크([http://localhost:3000](http://localhost:3000))로 진입합니다.
+2.  동네명(예: `성수동`, `망원동`, `한남동`)을 검색창에 입력하고 **`[레이더 가동]`**을 누릅니다.
+3.  3.5초의 스캐닝 연출 후 나타나는 결과 화면에서 **실제 재생 가능한 최근 유튜브 영상** 및 **Claude AI의 기회/위협 진단**, 그리고 **정부 매출 통계 대조 카드**를 확인합니다.
+4.  우측 상단의 **`[다른 상권과 비교]`** 버튼을 클릭하여 대조 동네를 검색하면, 두 상권의 모든 수치(유튜브 반응성 및 공공 개폐업률)를 나란히 비교해 볼 수 있습니다.
+5.  최신 데이터 갱신이 필요할 때는 왼쪽 상단의 **`[실시간 데이터 갱신]`**을 눌러 캐시를 강제로 비우고 재스캔합니다.

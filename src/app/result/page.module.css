@@ -1,0 +1,845 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem 1.5rem;
+  z-index: 1;
+}
+
+.main {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* 상단 네비게이션 헤더 */
+.navHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.25rem;
+}
+
+.backBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #a1a1aa;
+  cursor: pointer;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  font-weight: 500;
+}
+
+.backBtn:hover {
+  color: #ffffff;
+}
+
+.reportTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.reportTitle span {
+  color: var(--primary);
+}
+
+.compareTriggerBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 8px;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.compareTriggerBtn:hover {
+  background: rgba(139, 92, 246, 0.2);
+  transform: translateY(-1px);
+}
+
+/* 메인 대시보드 배치 (게이지 & AI 리포트) */
+.topRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 800px) {
+  .topRow {
+    grid-template-columns: 340px 1fr;
+  }
+}
+
+/* 온도계 카드 */
+.gaugeCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2.25rem 1.5rem;
+}
+
+.gaugeWrapper {
+  position: relative;
+  width: 220px;
+  height: 120px; /* 반원 높이 */
+  margin-bottom: 1rem;
+}
+
+.gaugeSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.gaugeTrack {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.05);
+  stroke-width: 14;
+  stroke-linecap: round;
+}
+
+.gaugeFill {
+  fill: none;
+  stroke-width: 14;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.5s cubic-bezier(0.1, 0.8, 0.2, 1);
+}
+
+.gaugeNeedle {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 4px;
+  height: 80px;
+  background: #ffffff;
+  transform-origin: bottom center;
+  transform: translate(-50%, 0) rotate(-90deg);
+  transition: transform 1.5s cubic-bezier(0.1, 0.8, 0.2, 1);
+  border-radius: 999px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.gaugeCenterDot {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 16px;
+  background: #ffffff;
+  border-radius: 50%;
+  border: 3px solid var(--card);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+.scoreValue {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.scoreUnit {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #71717a;
+  margin-left: 0.15rem;
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.statusDesc {
+  font-size: 0.82rem;
+  color: #a1a1aa;
+  line-height: 1.5;
+  padding: 0 0.5rem;
+}
+
+/* AI 분석 보고서 카드 */
+.aiReportCard {
+  position: relative;
+  overflow: hidden;
+  animation: neonGlow 6s ease-in-out infinite;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.aiHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.85rem;
+}
+
+.aiIconWrapper {
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+}
+
+.aiHeader h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.aiSummary {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #e4e4e7;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  border-left: 3px solid var(--primary);
+}
+
+.aiProsCons {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .aiProsCons {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.aiPros,
+.aiCons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.aiPros h3,
+.aiCons h3 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.aiPros h3 { color: var(--stable); }
+.aiCons h3 { color: var(--hot); }
+
+.aiList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.aiList li {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #a1a1aa;
+  position: relative;
+  padding-left: 1.1rem;
+}
+
+.aiList li::before {
+  content: "•";
+  position: absolute;
+  left: 0.25rem;
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.aiPros .aiList li::before { color: var(--stable); }
+.aiCons .aiList li::before { color: var(--hot); }
+
+.aiRecommendation {
+  background: rgba(139, 92, 246, 0.04);
+  border: 1px dashed rgba(139, 92, 246, 0.25);
+  border-radius: 10px;
+  padding: 1.1rem;
+}
+
+.aiRecommendation h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.aiRecommendation p {
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: #d4d4d8;
+}
+
+/* 신호 계산 3대 세부 지표 */
+.signalsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.sectionTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.signalsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 600px) {
+  .signalsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.signalCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.signalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.signalLabel {
+  font-size: 0.8rem;
+  color: #a1a1aa;
+  font-weight: 500;
+}
+
+.signalIcon {
+  color: var(--primary);
+}
+
+.signalValue {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.signalProgressWrapper {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 0.25rem;
+}
+
+.signalProgressFill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.signalFootnote {
+  font-size: 0.72rem;
+  color: #71717a;
+}
+
+/* 중간 로우: 트렌드 업종 TOP 5 & 인기 채널 */
+.midRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 800px) {
+  .midRow {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.categoryList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.categoryItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.categoryMeta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.categoryName {
+  font-weight: 600;
+  color: #e4e4e7;
+}
+
+.categoryStat {
+  color: #a1a1aa;
+  font-weight: 500;
+}
+
+.barTrack {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: linear-gradient(to right, var(--primary), #a78bfa);
+  border-radius: 999px;
+}
+
+.channelList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.channelItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.channelInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.channelName {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.channelCount {
+  font-size: 0.75rem;
+  color: #71717a;
+}
+
+.channelRating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #eab308;
+}
+
+/* 최근 인기 영상 그리드 */
+.videosSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.videosGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 600px) {
+  .videosGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .videosGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.videoCard {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+  cursor: pointer;
+}
+
+.thumbnailWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: #27272a;
+}
+
+.thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.videoCard:hover .thumbnail {
+  transform: scale(1.03);
+}
+
+.videoDuration {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  background: rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.videoBody {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.videoTitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #ffffff;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 2.4rem;
+}
+
+.videoMeta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: #71717a;
+}
+
+/* 비교 분석 모달창 스타일 */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1rem;
+}
+
+.modalContent {
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 16px;
+  padding: 2rem;
+  position: relative;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: none;
+  border: none;
+  color: #a1a1aa;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.closeBtn:hover {
+  color: #ffffff;
+}
+
+.modalTitle {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+}
+
+.compareInputSection {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  max-width: 480px;
+}
+
+.compareInput {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.compareInput:focus {
+  border-color: var(--primary);
+}
+
+.compareBtn {
+  padding: 0 1.25rem;
+  background: var(--primary);
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.compareBtn:hover {
+  filter: brightness(1.1);
+}
+
+.compareLoading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 3rem 0;
+  color: #a1a1aa;
+}
+
+/* 비교 대시보드 테이블 레이아웃 */
+.compareTableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.compareTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.compareTable th {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #71717a;
+}
+
+.compareTable td {
+  padding: 1.25rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  font-size: 0.88rem;
+  color: #e4e4e7;
+  vertical-align: top;
+}
+
+.rowHeader {
+  font-weight: 700;
+  color: #ffffff !important;
+  width: 160px;
+}
+
+.colDistrict {
+  width: 320px;
+}
+
+.colScore {
+  font-size: 1.5rem !important;
+  font-weight: 800;
+}
+
+.compList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.compList li {
+  font-size: 0.8rem;
+  color: #a1a1aa;
+  padding-left: 0.75rem;
+  position: relative;
+}
+
+.compList li::before {
+  content: "-";
+  position: absolute;
+  left: 0;
+}
+
+/* 공공 데이터 대조 섹션 추가 스타일 */
+.publicSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  width: 100%;
+}
+
+.publicCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.publicMainGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .publicMainGrid {
+    grid-template-columns: 1fr 1.2fr 1fr;
+  }
+}
+
+.publicMetricBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.publicMetricLabel {
+  font-size: 0.8rem;
+  color: #a1a1aa;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.publicMetricValue {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.publicMetricFootnote {
+  font-size: 0.7rem;
+  color: #71717a;
+}
+
+.rateComparisonRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.rateCol {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.rateCol span {
+  font-size: 0.8rem;
+}
+
+.rateBarTrack {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.rateBarFill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.survivalValueRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.survivalValue {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.survivalGaugeBar {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.survivalGaugeFill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.publicSourceText {
+  font-size: 0.72rem;
+  color: #71717a;
+  border-top: 1px solid var(--border);
+  padding-top: 0.75rem;
+  text-align: left;
+}
+
