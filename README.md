@@ -47,23 +47,34 @@
 
 ---
 
-## 📖 3. 사용 방법
+## 📖 3. 설치 및 사용 방법 (로컬 실행 가이드)
 
-### 1단계: API 키 준비 및 입력
-프로젝트 루트 폴더 내의 [`.env.local`](file:///c:/Users/kikin/Projects/antigravity-StreetPulse-app/.env.local) 파일을 열고 발급받은 API 키를 큰따옴표 안에 입력한 뒤 저장합니다:
-```env
-# 유튜브 데이터 연동을 위한 API 키 (YouTube Data API v3)
-YOUTUBE_API_KEY="AIzaSy..."
+프로젝트를 깃허브에서 처음 다운로드(클론)받았거나, 노트북의 폴더를 지웠다가 다시 설치하여 실행하려는 경우 다음 순서대로 진행합니다.
 
-# Claude AI 분석 리포트 연동을 위한 API 키 (Anthropic Claude API)
-ANTHROPIC_API_KEY="sk-ant-..."
+### 1단계: 패키지 의존성 설치
+다운로드받은 프로젝트 폴더 내부에서 터미널(PowerShell 또는 명령 프롬프트)을 열고, 다음 명령을 실행하여 필요한 라이브러리 폴더(`node_modules`)를 새로 다운로드합니다.
+```bash
+npm install
 ```
 
-### 2단계: 개발 서버 기동
-프로젝트 경로 내 터미널에서 다음 명령을 실행하여 개발 서버를 켭니다 (현재 기동되어 작동 중입니다):
+### 2단계: API 키 환경 변수 파일 생성 및 기입
+1. 프로젝트 루트 폴더에 `.env.local` 이라는 이름의 텍스트 파일을 새로 생성합니다.
+2. 파일을 열어 아래 템플릿 양식을 붙여넣고, 본인이 발급받은 실제 API 키 값을 큰따옴표 안에 입력한 뒤 저장합니다.
+```env
+# 유튜브 데이터 연동을 위한 API 키 (YouTube Data API v3)
+YOUTUBE_API_KEY="본인의_유튜브_API_키_기입"
+
+# Claude AI 분석 리포트 연동을 위한 API 키 (Anthropic Claude API)
+ANTHROPIC_API_KEY="본인의_클로드_API_키_기입"
+```
+> 🔒 **보안 안내**: 이 파일은 사용자님의 로컬 PC에만 보관되며, 깃허브에 다시 코드를 커밋하더라도 외부 유출을 막기 위해 깃 업로드 대상에서 완벽히 배제(`.gitignore` 처리)됩니다.
+
+### 3단계: 개발 서버 기동
+세팅이 완료되었다면 다음 명령을 터미널에 실행하여 로컬 개발 서버를 기동합니다.
 ```bash
 npm run dev
 ```
+
 
 ### 3단계: 상권 검색 및 분석
 1.  브라우저를 열고 최상단의 실행 링크([http://localhost:3000](http://localhost:3000))로 진입합니다.
